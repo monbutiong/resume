@@ -23,7 +23,49 @@
     </head>
 
     <body>
-	
+
+    <style type="text/css">
+    	body > .skiptranslate {
+    	    display: none;
+    	}
+
+    	.goog-te-banner-frame.skiptranslate {
+    	    display: none !important;
+    	}
+    	body {
+    	    top: 0px !important;
+    	}
+    </style>	
+	<script type="text/javascript">
+	    // Function to set a cookie
+	    function setCookie(key, value, expiry) {
+	        var expires = new Date();
+	        expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+	        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+	    }
+
+	    // Function to initialize the translation widget
+	    function googleTranslateElementInit() {
+	        new google.translate.TranslateElement({
+	            autoDisplay: false
+	        }, 'google_translate_element');
+	        $('#gtran').hide();
+	    }
+
+	    // Function to change the language in Google Translate
+	    function changeLanguage(languageCode) {
+	        // Set the language in the cookie (if needed for your implementation)
+	        setCookie('googtrans', '/' + languageCode, 1);  // Example: '/en', '/ja', '/pl'
+
+	        location.href = "?lang="+languageCode;
+	    }
+	</script>
+
+	<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+	<div id="gtran"> 
+	    <div id="google_translate_element"></div>
+	</div>
 <!-- Preloader -->
 <div class="loader">
 		<!-- Preloader inner -->
@@ -119,6 +161,15 @@
 	                                <h1 class="mb-20">Mon Butiong</h1>
 	                                <h3>Web Developer / Hybrid Mobile App Developer</h3>
 	                            </div>
+
+	                            <center>
+	                            	<a href="Javascript:changeLanguage('en')"><img src="img/flag/en.svg" style="height: 15px; margin: 2px; border: 1px solid #000;" /></a>
+	                            	<a href="Javascript:changeLanguage('ja')"><img src="img/flag/jp.svg" style="height: 15px; margin: 2px; border: 1px solid #000;" /></a>
+	                            	<a href="Javascript:changeLanguage('pl')"><img src="img/flag/pl.svg" style="height: 15px; margin: 2px; border: 1px solid #000;" /></a>
+	                            	<a href="Javascript:changeLanguage('qa')"><img src="img/flag/qa.svg" style="height: 15px; margin: 2px; border: 1px solid #000;" /></a>
+	                            	<a href="Javascript:changeLanguage('de')"><img src="img/flag/de.svg" style="height: 15px; margin: 2px; border: 1px solid #000;" /></a> 
+	                            </center>
+
 									 </div>
 								 </div>
 								<!--End row-->
@@ -2454,7 +2505,7 @@
 					<div class="col-md-1 pd-l0">
 		
 					<!--Social-->					
-					<ul class="social">
+					<ul class="social"> 
 						<li><a href="https://web.facebook.com/rcrizt"><i class="icon-facebook"></i></a></li>
 						<li><a href="https://twitter.com/ButiongMon"><i class="icon-twitter"></i></a></li> 
 						<li><a href="https://www.linkedin.com/in/ramon-christopher-butiong-7206b5144/"><i class="icon-linkedin"></i></a></li>
@@ -2466,6 +2517,7 @@
 					<div class="copyright">
 					<p>© <?=date('Y');?> monbutiong.</p>
 					</div>
+
 					<!--End copyright-->		
 		
 				</div>
