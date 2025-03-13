@@ -36,30 +36,7 @@
     	    top: 0px !important;
     	}
     </style>	
-	<script type="text/javascript">
-	    // Function to set a cookie
-	    function setCookie(key, value, expiry) {
-	        var expires = new Date();
-	        expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
-	        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
-	    }
-
-	    // Function to initialize the translation widget
-	    function googleTranslateElementInit() {
-	        new google.translate.TranslateElement({
-	            autoDisplay: false
-	        }, 'google_translate_element');
-	        $('#gtran').hide();
-	    }
-
-	    // Function to change the language in Google Translate
-	    function changeLanguage(languageCode) {
-	        // Set the language in the cookie (if needed for your implementation)
-	        setCookie('googtrans', '/' + languageCode, 1);  // Example: '/en', '/ja', '/pl'
-
-	        location.href = "?lang="+languageCode;
-	    }
-	</script>
+	
 
 	<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
@@ -161,13 +138,13 @@
 	                                <h3>Web Developer / Hybrid Mobile App Developer</h3>
 	                            </div>
 
-	                            <center>
+	                            <!-- <center>
 	                            	<a title="Change language to English" href="Javascript:changeLanguage('en')"><img src="img/flag/en.svg" style="height: 15px; margin: 2px; border: 1px solid #000;" /></a>
 	                            	<a title="Change language to Japanese" href="Javascript:changeLanguage('ja')"><img src="img/flag/jp.svg" style="height: 15px; margin: 2px; border: 1px solid #000;" /></a>
 	                            	<a title="Change language to Polish" href="Javascript:changeLanguage('pl')"><img src="img/flag/pl.svg" style="height: 15px; margin: 2px; border: 1px solid #000;" /></a>
 	                            	<a title="Change language to Arabic" href="Javascript:changeLanguage('qa')"><img src="img/flag/qa.svg" style="height: 15px; margin: 2px; border: 1px solid #000;" /></a>
 	                            	<a title="Change language to German" href="Javascript:changeLanguage('de')"><img src="img/flag/de.svg" style="height: 15px; margin: 2px; border: 1px solid #000;" /></a> 
-	                            </center>
+	                            </center> -->
 
 									 </div>
 								 </div>
@@ -1116,8 +1093,7 @@
 								</div>
 								</div>
 								<!--End row-->
-							
-										
+									
 									</div>
 									<!--End block content-->	
 									
@@ -1145,26 +1121,23 @@
 
 								<!--Block content-->	
 							<div class="block-content mb-100 ">
-
-								 
-
-									<!--Block content-->	
+ 
+								<!--Block content-->	
 								<div class="block-content">
 
 										<!--Row-->	
 										<div class="row">
-									<div class="col-md-12">
-										<span class="page-number emph-1">- 3/6 -</span>
-									</div>
+											<div class="col-md-12">
+												<span class="page-number emph-1">- 3/6 -</span>
+											</div>
 
-								</div>
+										</div>
 								<!--End row-->	
 								</div>
 								<!--End block content-->
 
 								</div>
-								<!--End content-->
-								
+								<!--End content--> 
 							</div>
 							<!--End resume-->	
 					
@@ -1176,7 +1149,6 @@
 
 						<!--Portfolio Tab-->
 						<section id="live" class="bg-white t-center">
-							
 							
 							<!--Portfolio-->
 							<div class="live">
@@ -1206,7 +1178,7 @@
 							<!--End block content-->
 							
 									<!--Block content-->	
-						<div class="block-content mb-100">
+							<div class="block-content mb-100">
 
 								<!--Works-->
 								<div class="works">
@@ -1214,16 +1186,16 @@
 								<!--Row-->	
 								<div class="row">
 									
-								<div class="col-md-12">
+									<div class="col-md-12">
 										
-						<!--Block filter-->
-						 
-						<!--End block filter-->
+									<!--Block filter-->
+								 
+									<!--End block filter-->
 
-						</div>
+									</div>
 																													
-						</div>
-						<!--End row-->
+								</div>
+							<!--End row-->
 
 							<!--Row-->	
 							<div class="row">
@@ -2591,16 +2563,86 @@
 				<footer class="footer ">
 
 					<div class="col-md-1 pd-l0">
-		
-					<!--Social-->					
+					<style>
+					  
+					  .dropdown {
+					    position: relative;
+					    display: inline-block;
+					  }
+
+					  .dropdown-content {
+					    display: none;
+					    position: absolute;
+					    background-color: white;
+					    min-width: 100px;
+					    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+					    z-index: 1;
+					  }
+
+					  .dropdown-content a {
+					    color: black;
+					    padding: 8px 12px;
+					    text-decoration: none;
+					    display: block;
+					    background-color: white;
+					  }
+
+					  .dropdown-content a:hover {
+					    background-color: #f1f1f1;
+					  }
+
+					  .dropdown:hover .dropdown-content {
+					    display: block;
+					  }
+ 
+					</style>
+
+  				
 					<ul class="social"> 
+						<li class="dropdown">
+						    <a href="#"><img id="flagIcon" src="img/flag/en.svg" style="height: 15px; margin: 2px; border: 0px solid #000; margin-top: 15px !important;" /></a>
+						    <div class="dropdown-content">
+						      <a href="Javascript:changeLanguage('en')">English</a>
+						      <a href="Javascript:changeLanguage('ja')">Japanese</a>
+						      <a href="Javascript:changeLanguage('pl')">Polish</a>
+						      <a href="Javascript:changeLanguage('qa')">Arabic</a>
+						      <a href="Javascript:changeLanguage('de')">German</a>
+						    </div>
+						  </li>
 						<li><a href="https://web.facebook.com/rcrizt"><i class="icon-facebook"></i></a></li>
 						<li><a href="https://twitter.com/ButiongMon"><i class="icon-twitter"></i></a></li> 
 						<li><a href="https://www.linkedin.com/in/ramon-christopher-butiong-7206b5144/"><i class="icon-linkedin"></i></a></li>
 						<li><a href="https://www.instagram.com/r.crizt/"><i class="icon-instagram"></i></a></li>
 					</ul>
-					<!--End social-->	
-					
+					 
+					<script type="text/javascript">
+					    // Function to set a cookie
+					    function setCookie(key, value, expiry) {
+					        var expires = new Date();
+					        expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+					        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+					    }
+
+					    // Function to initialize the translation widget
+					    function googleTranslateElementInit() {
+					        new google.translate.TranslateElement({
+					            autoDisplay: false
+					        }, 'google_translate_element');
+					        $('#gtran').hide();
+					    }
+
+					    // Function to change the language in Google Translate
+					    function changeLanguage(languageCode) {
+					        // Set the language in the cookie (if needed for your implementation)
+					        setCookie('googtrans', '/' + languageCode, 1);  // Example: '/en', '/ja', '/pl'
+
+					        location.href = "?lang="+languageCode;
+					    }
+
+					    const language = getCookie('language') || 'en';
+					    document.getElementById('flagIcon').src = `img/flag/${language}.svg`;
+					</script>
+
 					<!--Copyright-->		
 					<div class="copyright">
 					<p>© <?=date('Y');?> monbutiong.</p>
