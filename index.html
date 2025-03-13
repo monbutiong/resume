@@ -40,6 +40,23 @@
 
 	<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+	<script type="text/javascript">
+		// Function to set a cookie
+		function setCookie(key, value, expiry) {
+		    var expires = new Date();
+		    expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+		    document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+		}
+
+		// Function to initialize the translation widget
+		function googleTranslateElementInit() {
+		    new google.translate.TranslateElement({
+		        autoDisplay: false
+		    }, 'google_translate_element');
+		    $('#gtran').hide();
+		}
+	</script>
+
 	<div id="gtran"> 
 	    <div id="google_translate_element"></div>
 	</div>
@@ -2589,6 +2606,7 @@
 
 					  .dropdown-content a:hover {
 					    background-color: #f1f1f1;
+					    color: #adad97;
 					  }
 
 					  .dropdown:hover .dropdown-content {
@@ -2616,20 +2634,7 @@
 					</ul>
 					 
 					<script type="text/javascript">
-					    // Function to set a cookie
-					    function setCookie(key, value, expiry) {
-					        var expires = new Date();
-					        expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
-					        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
-					    }
-
-					    // Function to initialize the translation widget
-					    function googleTranslateElementInit() {
-					        new google.translate.TranslateElement({
-					            autoDisplay: false
-					        }, 'google_translate_element');
-					        $('#gtran').hide();
-					    }
+					    
 
 					    // Function to change the language in Google Translate
 					    function changeLanguage(languageCode) {
@@ -2639,7 +2644,7 @@
 					        location.href = "?lang="+languageCode;
 					    }
 
-					    const language = getCookie('language') || 'en';
+					    const language = getCookie('googtrans') || 'en';
 					    document.getElementById('flagIcon').src = `img/flag/${language}.svg`;
 					</script>
 
