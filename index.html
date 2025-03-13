@@ -2640,11 +2640,11 @@
 					    function changeLanguage(languageCode) {
 					        // Set the language in the cookie (if needed for your implementation)
 					        setCookie('googtrans', '/' + languageCode, 1);  // Example: '/en', '/ja', '/pl'
-
+					        setCookie('langu', languageCode, 1); 
 					        location.href = "?lang="+languageCode;
 					    }
 
-					    const language = getCookie('googtrans') || 'en';
+					    const language = getCookie('langu') || 'en';
 					    document.getElementById('flagIcon').src = `img/flag/${language}.svg`;
 					</script>
 
