@@ -2644,7 +2644,29 @@
 					        location.href = "?lang="+languageCode;
 					    }
 
+					    function getCookie(key) {
+				            var name = key + "=";
+				            var decodedCookie = decodeURIComponent(document.cookie);
+				            var ca = decodedCookie.split(';');
+				            for(var i = 0; i < ca.length; i++) {
+				                var c = ca[i].trim();
+				                if (c.indexOf(name) == 0) {
+				                    return c.substring(name.length, c.length);
+				                }
+				            }
+				            return "";
+				        }
+
 					    const language = getCookie('langu') || 'en';
+
+					    if (language === 'ar') {
+			                document.documentElement.setAttribute('dir', 'rtl');  // Set direction to RTL for Arabic
+			                document.body.style.textAlign = 'right';  // Align text to the right
+			            } else {
+			                document.documentElement.setAttribute('dir', 'ltr');  // Set direction to LTR for non-RTL languages
+			                document.body.style.textAlign = 'left';  // Align text to the left
+			            }
+					    
 					    document.getElementById('flagIcon').src = `img/flag/${language}.svg`;
 					</script>
 
