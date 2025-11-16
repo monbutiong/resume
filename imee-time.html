@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shift Table</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+    }
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      text-align: center;
+      padding: 10px 8px;
+    }
+    thead {
+      background: linear-gradient(to right, #4e73df, #1cc88a);
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    tbody tr:nth-child(even) { background: #f9f9f9; }
+    tbody tr:hover { background: #e2f0ff; }
+    input[type="date"], input[type="time"], input[type="datetime-local"], select {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 13px;
+      transition: 0.2s all;
+    }
+    input:focus, select:focus { outline: none; border-color: #4e73df; box-shadow: 0 0 5px rgba(78,115,223,0.5); }
+    span { display: block; font-weight: 500; color: #333; }
+    button.addRow, button.removeRow {
+      padding: 5px 10px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 2px;
+      transition: 0.2s all;
+    }
+    button.addRow { background-color: #1cc88a; color: white; }
+    button.addRow:hover { background-color: #17a673; }
+    button.removeRow { background-color: #e74a3b; color: white; }
+    button.removeRow:hover { background-color: #c0392b; }
+  </style>
+</head>
+<body>
+
+<table id="shiftTable">
+  <thead>
+    <tr>
+      <th>Shift In</th>
+      <th>Shift Out</th>
+      <th>Actual In</th>
+      <th>Actual Out</th>
+      <th>Actual Total</th>
+      <th>Start of OT</th>
+      <th>End of OT</th>
+      <th>Total OT</th>
+      <th>Option</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <input type="date" name="shift_date_in">
+        <select name="shift_time_in"></select>
+      </td>
+      <td>
+        <input type="date" name="shift_date_out">
+        <select name="shift_time_out"></select>
+      </td>
+      <td>
+        <input type="datetime-local" name="actual_in">
+      </td>
+      <td>
+        <input type="datetime-local" name="actual_out">
+      </td>
+      <td><span name="actual_hours"></span></td>
+      <td><span name="ot_start"></span></td>
+      <td><span name="ot_end"></span></td>
+      <td><span name="ot_hours"></span></td>
+      <td>
+        <button class="addRow">+</button>
+        <button class="removeRow">-</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+// Preload current date in mm/dd/yyyy
+function formatDate(date) {
+  const mm = String(date.getMonth()+1).padStart(2,'0');
+  const dd = String(date.getDate()).padStart(2,'0');
+  const yyyy = date.getFullYear();
+  return `${yyyy}-${mm}-${dd}`; // for input type=date (ISO format)
+}
+
+// Fill 24h 30-min interval dropdowns
+function fillTimeOptions(select) {
+  select.innerHTML = '';
+  for (let h=0; h<24; h++){
+    for (let m=0; m<60; m+=30){
+      const hh = h.toString().padStart(2,'0');
+      const mm = m.toString().padStart(2,'0');
+      const option = document.createElement('option');
+      option.value = `${hh}:${mm}`;
+      option.text = `${hh}:${mm}`;
+      select.add(option);
+    }
+  }
+}
+
+// Convert decimal hours to "X hours Y min"
+function formatHours(diffHours){
+  const hours = Math.floor(diffHours);
+  const minutes = Math.round((diffHours - hours)*60);
+  return `${hours} hours ${minutes} min`;
+}
+
+// Initialize table row
+function initRow(row){
+  const today = new Date();
+  row.querySelector('input[name="shift_date_in"]').value = formatDate(today);
+  row.querySelector('input[name="shift_date_out"]').value = formatDate(today);
+  row.querySelectorAll('select[name="shift_time_in"], select[name="shift_time_out"]').forEach(fillTimeOptions);
+}
+
+// Compute hours
+function calculateHours(row){
+  const actualIn = row.querySelector('input[name="actual_in"]').value ? new Date(row.querySelector('input[name="actual_in"]').value) : null;
+  const actualOut = row.querySelector('input[name="actual_out"]').value ? new Date(row.querySelector('input[name="actual_out"]').value) : null;
+  const shiftOutDate = row.querySelector('input[name="shift_date_out"]').value;
+  const shiftOutTime = row.querySelector('select[name="shift_time_out"]').value;
+
+  const actualHoursSpan = row.querySelector('span[name="actual_hours"]');
+  const otStartSpan = row.querySelector('span[name="ot_start"]');
+  const otEndSpan = row.querySelector('span[name="ot_end"]');
+  const otHoursSpan = row.querySelector('span[name="ot_hours"]');
+
+  // Actual total
+  if(actualIn && actualOut){
+    const diff = (actualOut - actualIn)/(1000*60*60);
+    actualHoursSpan.textContent = formatHours(diff);
+  } else actualHoursSpan.textContent='';
+
+  // OT
+  if(shiftOutDate && shiftOutTime){
+    const [h,m] = shiftOutTime.split(':');
+    const otStart = new Date(shiftOutDate);
+    otStart.setHours(parseInt(h), parseInt(m));
+    if(actualOut && actualOut > otStart){
+      otStartSpan.textContent = '';
+      otEndSpan.textContent = '';
+      otHoursSpan.textContent = formatHours((actualOut - otStart)/(1000*60*60));
+    } else {
+      otStartSpan.textContent = '';
+      otEndSpan.textContent = '';
+      otHoursSpan.textContent = '';
+    }
+  }
+}
+
+// Initialize first row
+document.querySelectorAll('#shiftTable tbody tr').forEach(initRow);
+
+// Event listener for calculation
+document.getElementById('shiftTable').addEventListener('input', function(e){
+  const row = e.target.closest('tr');
+  calculateHours(row);
+});
+
+// Add/remove row
+document.getElementById('shiftTable').addEventListener('click', function(e){
+  const row = e.target.closest('tr');
+  if(e.target.classList.contains('addRow')){
+    const clone = row.cloneNode(true);
+    clone.querySelectorAll('input').forEach(input=>input.value='');
+    clone.querySelectorAll('span').forEach(span=>span.textContent='');
+    row.parentNode.appendChild(clone);
+    initRow(clone);
+  }
+  if(e.target.classList.contains('removeRow')){
+    if(document.querySelectorAll('#shiftTable tbody tr').length>1){
+      row.remove();
+    } else {
+      alert("At least one row required!");
+    }
+  }
+});
+</script>
