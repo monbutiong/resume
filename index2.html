@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mon Butiong — Web Developer</title>
+  <meta name="description" content="Web & Hybrid Mobile App Developer based in Doha, Qatar">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="img/ico.jpg" type="image/gif" sizes="16x16">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --off: #f7f6f3;
+      --muted: #888780;
+      --border: rgba(0,0,0,0.10);
+      --accent: #1a1a2e;
+      --red: #c0392b;
+      --gap: 2rem;
+      --sidebar: 260px;
+      --radius: 12px;
+      --font-head: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--off);
+      color: var(--black);
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Layout ─── */
+    .shell {
+      display: grid;
+      grid-template-columns: var(--sidebar) 1fr;
+      min-height: 100vh;
+    }
+
+    /* ─── Sidebar ─── */
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      background: var(--black);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      padding: 2.5rem 1.75rem;
+      overflow-y: auto;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      margin-bottom: 1.25rem;
+    }
+    .avatar-wrap img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      border: 2.5px solid rgba(255,255,255,0.15);
+    }
+    .avatar-dot {
+      position: absolute;
+      bottom: 3px;
+      right: 3px;
+      width: 12px;
+      height: 12px;
+      background: #4ade80;
+      border-radius: 50%;
+      border: 2px solid var(--black);
+    }
+
+    .sidebar-name {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.25;
+      margin-bottom: 0.25rem;
+    }
+    .sidebar-role {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    nav { flex: 1; }
+    nav ul { list-style: none; }
+    nav ul li + li { margin-top: 2px; }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 0.825rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.01em;
+      transition: background 0.2s, color 0.2s;
+    }
+    nav a:hover, nav a.active {
+      background: rgba(255,255,255,0.08);
+      color: var(--white);
+    }
+    nav a svg { flex-shrink: 0; opacity: 0.7; }
+    nav a:hover svg, nav a.active svg { opacity: 1; }
+
+    .nav-label-small {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.25);
+      padding: 1.5rem 12px 0.5rem;
+    }
+
+    .sidebar-footer {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .socials {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    .socials a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.6);
+      transition: background 0.2s, color 0.2s;
+    }
+    .socials a:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+    .sidebar-location {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ─── Main ─── */
+    main { overflow-y: auto; }
+
+    section {
+      min-height: 100vh;
+      padding: 5rem 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-of-type { border-bottom: none; }
+
+    /* ─── Section header ─── */
+    .section-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: var(--font-head);
+      font-size: 2.4rem;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 3rem;
+    }
+
+    /* ─── Hero / About ─── */
+    #about .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 4rem;
+      align-items: start;
+      margin-bottom: 4rem;
+    }
+
+    .hero-headline {
+      font-family: var(--font-head);
+      font-size: 3.6rem;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+    .hero-headline em {
+      font-style: normal;
+      color: var(--muted);
+    }
+
+    .hero-lead {
+      font-size: 1.05rem;
+      color: #444;
+      max-width: 520px;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-dark {
+      background: var(--black);
+      color: var(--white);
+      border: 1.5px solid var(--black);
+    }
+    .btn-dark:hover { background: #222; }
+    .btn-outline {
+      background: transparent;
+      color: var(--black);
+      border: 1.5px solid rgba(0,0,0,0.2);
+    }
+    .btn-outline:hover { border-color: var(--black); }
+
+    /* Info card */
+    .info-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 1.75rem;
+    }
+    .info-card h3 {
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      gap: 1rem;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .info-value {
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* Stats strip */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .stat-cell {
+      background: var(--white);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--font-head);
+      font-size: 2.4rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-lbl {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Contact rows */
+    .contact-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 1.5rem;
+    }
+    .contact-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: var(--white);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .contact-chip:hover { border-color: rgba(0,0,0,0.35); }
+    .contact-chip svg { color: var(--muted); }
+
+    /* ─── Experience ─── */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .tl-item:first-child { padding-top: 0; }
+    .tl-item:last-child { border-bottom: none; }
+
+    .tl-date {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      padding-top: 3px;
+      line-height: 1.4;
+    }
+
+    .tl-dot {
+      display: none;
+    }
+
+    .tl-body {}
+    .tl-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 0.75rem;
+    }
+    .company-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: contain;
+      background: #f0ede8;
+      border: 1px solid var(--border);
+      padding: 4px;
+      flex-shrink: 0;
+    }
+    .tl-title {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .tl-company {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .tl-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .tl-bullets li {
+      font-size: 0.875rem;
+      color: #444;
+      padding-left: 1rem;
+      position: relative;
+    }
+    .tl-bullets li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--muted);
+      font-size: 0.7rem;
+      top: 3px;
+    }
+
+    /* ─── Skills ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .skill-group-title {
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skill-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .skill-item:last-child { border-bottom: none; }
+    .skill-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    .skill-bar-wrap {
+      width: 120px;
+      height: 4px;
+      background: rgba(0,0,0,0.08);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .skill-bar {
+      height: 100%;
+      background: var(--black);
+      border-radius: 100px;
+    }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag {
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      background: var(--white);
+      border: 1px solid var(--border);
+    }
+    .tag.dark {
+      background: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+    }
+
+    /* ─── Projects ─── */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .proj-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+    .proj-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+
+    .proj-thumb {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+      background: #f0ede8;
+    }
+    .proj-info {
+      padding: 1rem 1.1rem;
+    }
+    .proj-name {
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .proj-type {
+      font-size: 0.73rem;
+      color: var(--muted);
+    }
+    .proj-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 100px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      background: var(--white);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 720px;
+      max-height: 85vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-head h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 600; }
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: var(--off);
+      cursor: pointer;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--muted);
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: #e8e5e0; }
+    .modal-body { flex: 1; overflow: auto; padding: 0; }
+    .modal-body embed, .modal-body iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 480px;
+      display: block;
+      border: none;
+    }
+
+    /* ─── Portfolio ─── */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 2rem;
+    }
+    .filter-btn {
+      padding: 7px 16px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--white);
+      border-color: var(--border);
+      color: var(--muted);
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--white);
+    }
+
+    .port-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .port-item {
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--border);
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+    .port-item:hover { transform: scale(1.02); }
+    .port-item img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      display: block;
+    }
+    .port-caption {
+      padding: 0.75rem;
+    }
+    .port-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .port-url {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    /* ─── Contact ─── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .contact-block {}
+    .contact-block h3 {
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+    .contact-link-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      font-size: 0.875rem;
+    }
+    .contact-link-row:last-child { border-bottom: none; }
+    .contact-link-row svg { color: var(--muted); flex-shrink: 0; }
+    .contact-link-row a { color: var(--black); font-weight: 500; }
+    .contact-link-row a:hover { text-decoration: underline; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.75rem; font-weight: 500; color: var(--muted); letter-spacing: 0.03em; text-transform: uppercase; }
+    .form-group input, .form-group textarea {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1.5px solid rgba(0,0,0,0.12);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      background: var(--white);
+      transition: border-color 0.2s;
+      outline: none;
+      color: var(--black);
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--black); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-full { grid-column: 1 / -1; }
+
+    /* Map wrapper */
+    .map-wrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    .map-wrap iframe { display: block; width: 100%; height: 280px; border: none; }
+
+    /* Education */
+    .edu-item {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .edu-item:last-child { border-bottom: none; }
+    .edu-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--off);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .edu-icon img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+    .edu-body {}
+    .edu-degree { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
+    .edu-school { font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
+    .edu-date { font-size: 0.73rem; font-weight: 500; color: var(--muted); }
+    .edu-note { font-size: 0.85rem; color: #444; margin-top: 6px; }
+    .award-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: #fef3c7;
+      color: #92400e;
+      margin-top: 6px;
+    }
+
+    /* Divider */
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 960px) {
+      .shell { grid-template-columns: 1fr; }
+      aside {
+        position: relative;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1.5rem;
+        align-items: center;
+      }
+      .avatar-wrap { margin-bottom: 0; width: 48px; height: 48px; }
+      .avatar-wrap img { width: 48px; height: 48px; }
+      .nav-label-small { display: none; }
+      nav ul { display: flex; flex-wrap: wrap; gap: 4px; }
+      nav ul li + li { margin-top: 0; }
+      .sidebar-footer { margin-top: 0; padding-top: 0; border-top: none; }
+      section { padding: 3rem 1.5rem; }
+      #about .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-headline { font-size: 2.4rem; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .stats-strip { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ─── Sidebar ─── -->
+  <aside>
+    <div class="avatar-wrap">
+      <img src="img/profile.jpg" alt="Mon Butiong">
+      <div class="avatar-dot"></div>
+    </div>
+    <div class="sidebar-name">Mon Butiong</div>
+    <div class="sidebar-role">Web &amp; Mobile Developer</div>
+
+    <nav>
+      <div class="nav-label-small">Menu</div>
+      <ul>
+        <li>
+          <a href="#about" class="active">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            About
+          </a>
+        </li>
+        <li>
+          <a href="#experience">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            Experience
+          </a>
+        </li>
+        <li>
+          <a href="#skills">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Skills
+          </a>
+        </li>
+        <li>
+          <a href="#projects">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Projects
+          </a>
+        </li>
+        <li>
+          <a href="#portfolio">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Portfolio
+          </a>
+        </li>
+        <li>
+          <a href="#contact">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.8 19.8 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.13 1 .36 1.98.69 2.91a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.06-1.06a2 2 0 0 1 2.11-.45c.93.33 1.9.56 2.91.69A2 2 0 0 1 22 16.92z"/></svg>
+            Contact
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="socials">
+        <a href="https://web.facebook.com/rcrizt" title="Facebook" target="_blank">
+          <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://twitter.com/ButiongMon" title="Twitter" target="_blank">
+          <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/ramon-christopher-butiong-7206b5144/" title="LinkedIn" target="_blank">
+          <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.instagram.com/r.crizt/" title="Instagram" target="_blank">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+      </div>
+      <div class="sidebar-location">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        Doha, Qatar
+      </div>
+    </div>
+  </aside>
+
+  <!-- ─── Main Content ─── -->
+  <main>
+
+    <!-- ── ABOUT ── -->
+    <section id="about">
+      <div class="hero-grid">
+        <div>
+          <div class="section-eyebrow">Hello, I'm</div>
+          <h1 class="hero-headline">Mon<br><em>Butiong</em></h1>
+          <p class="hero-lead">Experienced web &amp; mobile developer with a track record of building production-grade internal tools. Currently shipping apps at Porsche Center Doha.</p>
+          <div class="hero-cta-row">
+            <a href="resume-2024.pdf" download class="btn btn-dark">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download CV
+            </a>
+            <a href="#contact" class="btn btn-outline">Get in touch</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="info-card">
+            <h3>Personal Info</h3>
+            <div class="info-row"><span class="info-label">Birthday</span><span class="info-value">Dec 22, 1989</span></div>
+            <div class="info-row"><span class="info-label">Nationality</span><span class="info-value">Filipino</span></div>
+            <div class="info-row"><span class="info-label">Status</span><span class="info-value">Married</span></div>
+            <div class="info-row"><span class="info-label">From</span><span class="info-value">Laguna, Philippines</span></div>
+            <div class="info-row"><span class="info-label">Based in</span><span class="info-value">Doha, Qatar</span></div>
+            <div class="info-row"><span class="info-label">Website</span><span class="info-value"><a href="https://monbutiong.com" target="_blank" style="color:inherit;text-decoration:underline;">monbutiong.com</a></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-strip">
+        <div class="stat-cell">
+          <div class="stat-num">15+</div>
+          <div class="stat-lbl">Years coding</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">7</div>
+          <div class="stat-lbl">Companies</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">30+</div>
+          <div class="stat-lbl">Projects shipped</div>
+        </div>
+      </div>
+
+      <div class="contact-chips" style="margin-top:2rem;">
+        <a class="contact-chip" href="mailto:r.christopherbutiong@gmail.com">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+          r.christopherbutiong@gmail.com
+        </a>
+        <a class="contact-chip" href="tel:+97430641960">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.8 19.8 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72"/></svg>
+          +974 30641960
+        </a>
+        <span class="contact-chip">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          Umm Al Rabee St, Doha
+        </span>
+      </div>
+    </section>
+
+    <!-- ── EXPERIENCE ── -->
+    <section id="experience">
+      <div class="section-eyebrow">Career</div>
+      <h2 class="section-title">Work experience</h2>
+
+      <div class="timeline">
+
+        <div class="tl-item">
+          <div class="tl-date">Oct 2022<br>Present</div>
+          <div class="tl-body">
+            <div class="tl-header">
+              <img class="company-logo" src="img/company-logo/porsche.png" alt="Porsche">
+              <div>
+                <div class="tl-title">Web Developer</div>
+                <div class="tl-company">Porsche Center Doha — Doha, Qatar</div>
+              </div>
+            </div>
+            <ul class="tl-bullets">
+              <li>Designed and built a booking + e-commerce mobile app for Android and iOS.</li>
+              <li>Developed the Porsche Visual Reception web app for service advisers to manage pre-maintenance checklists.</li>
+              <li>Created the Guard Patrol app — RFID-based Android patrol tracking system.</li>
+              <li>Engineered SMS notification web app and Test Drive tracking app.</li>
+              <li>Built a project management and inventory system for Ventum Tech.</li>
+              <li>Crafted a CRM/sales system for Ineos Grenadier.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">May 2019<br>Jun 2022</div>
+          <div class="tl-body">
+            <div class="tl-header">
+              <img class="company-logo" src="img/company-logo/optek.png" alt="Optek">
+              <div>
+                <div class="tl-title">Web Developer</div>
+                <div class="tl-company">Optek Solutions — Ortigas, Philippines</div>
+              </div>
+            </div>
+            <ul class="tl-bullets">
+              <li>Developed a School Management System for a public school client.</li>
+              <li>Built an e-commerce mobile app for Android and iOS.</li>
+              <li>Maintained and updated the company website.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Aug 2018<br>May 2019</div>
+          <div class="tl-body">
+            <div class="tl-header">
+              <img class="company-logo" src="img/company-logo/hiretrades.png" alt="HGServices">
+              <div>
+                <div class="tl-title">Web Developer</div>
+                <div class="tl-company">HGServices Inc. — Alabang, Philippines</div>
+              </div>
+            </div>
+            <ul class="tl-bullets">
+              <li>Developed HireTrades mobile app — marketplace connecting traders and tradies.</li>
+              <li>Improved SEO performance of the company's mobile app website.</li>
+              <li>Built and maintained the REST API powering the mobile application.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">May 2016<br>May 2018</div>
+          <div class="tl-body">
+            <div class="tl-header">
+              <img class="company-logo" src="img/company-logo/keircom-old.png" alt="Keircom">
+              <div>
+                <div class="tl-title">IT Specialist</div>
+                <div class="tl-company">Keircom International — Riyadh, Saudi Arabia</div>
+              </div>
+            </div>
+            <ul class="tl-bullets">
+              <li>Developed a fixed asset management system with depreciation reports and barcode printing.</li>
+              <li>Managed and maintained the company's third-party ERP system.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Sep 2014<br>May 2016</div>
+          <div class="tl-body">
+            <div class="tl-header">
+              <img class="company-logo" src="img/company-logo/serttech.png" alt="Serttech">
+              <div>
+                <div class="tl-title">Web Developer</div>
+                <div class="tl-company">Serttech Inc. — Makati, Philippines</div>
+              </div>
+            </div>
+            <ul class="tl-bullets">
+              <li>Built HRweb — a comprehensive HRIS/payroll platform with nationwide clients.</li>
+              <li>Developed the HRweb mobile app with geofencing and clock-in/out functionality.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Sep 2010<br>Sep 2014</div>
+          <div class="tl-body">
+            <div class="tl-header">
+              <img class="company-logo" src="img/company-logo/cmi.png" alt="Clarmil">
+              <div>
+                <div class="tl-title">Programmer</div>
+                <div class="tl-company">Clarmil Manufacturing Inc. — Laguna, Philippines</div>
+              </div>
+            </div>
+            <ul class="tl-bullets">
+              <li>Developed employee info management, DTR and payroll web application.</li>
+              <li>Built a POS system for the employee canteen and inventory system for the cooperative store.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Jan 2011<br>Sep 2012</div>
+          <div class="tl-body">
+            <div class="tl-header">
+              <img class="company-logo" src="img/company-logo/sti.png" alt="STI">
+              <div>
+                <div class="tl-title">Part-Time IT Professor</div>
+                <div class="tl-company">STI College Santa Rosa — Laguna, Philippines</div>
+              </div>
+            </div>
+            <ul class="tl-bullets">
+              <li>Taught HTML, CSS, PHP, and JavaScript fundamentals to undergraduate students.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="section-divider"></div>
+      <div class="section-eyebrow" style="margin-bottom:1rem;">Education</div>
+
+      <div class="edu-item">
+        <div class="edu-icon"><img src="img/company-logo/sti.png" alt="STI"></div>
+        <div class="edu-body">
+          <div class="edu-degree">Bachelor of Science, Computer Science</div>
+          <div class="edu-school">STI College Santa Rosa</div>
+          <div class="edu-date">March 2006 – May 2010</div>
+          <div class="edu-note">Final project: Online Ordering with Inventory Management System.</div>
+          <div class="award-badge">
+            <svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Best Thesis &amp; Best Presenter
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SKILLS ── -->
+    <section id="skills">
+      <div class="section-eyebrow">Toolbox</div>
+      <h2 class="section-title">Skills &amp; stack</h2>
+
+      <div class="skills-grid">
+        <div>
+          <div class="skill-group-title">Frontend</div>
+          <div class="skill-item"><span class="skill-name">HTML</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">CSS</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:70%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">JavaScript</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:60%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">jQuery</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:60%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">Vue.js</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:40%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">Bootstrap</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:65%"></div></div></div>
+
+          <div class="skill-group-title" style="margin-top:2rem;">Mobile</div>
+          <div class="skill-item"><span class="skill-name">Apache Cordova</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:40%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">Android / iOS</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:50%"></div></div></div>
+        </div>
+
+        <div>
+          <div class="skill-group-title">Backend &amp; Database</div>
+          <div class="skill-item"><span class="skill-name">PHP</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:50%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">CodeIgniter</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:70%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">Laravel</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:50%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">Node.js</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:50%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">MySQL</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:70%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">REST / SOAP API</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:65%"></div></div></div>
+
+          <div class="skill-group-title" style="margin-top:2rem;">Tools &amp; other</div>
+          <div class="skill-item"><span class="skill-name">WordPress</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:50%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">Git</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:30%"></div></div></div>
+          <div class="skill-item"><span class="skill-name">Visual Basic</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:55%"></div></div></div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+      <div class="section-eyebrow" style="margin-bottom:1rem;">AI &amp; Automation</div>
+      <div class="tag-cloud">
+        <span class="tag dark">n8n Workflow Automation</span>
+        <span class="tag dark">GoHighLevel CRM</span>
+        <span class="tag dark">Z.ai / Goose Editor</span>
+        <span class="tag dark">GitHub Copilot</span>
+        <span class="tag">English (Advanced)</span>
+        <span class="tag">Japanese JLCT N4</span>
+        <span class="tag">Adobe Fireworks</span>
+        <span class="tag">SSH</span>
+        <span class="tag">FoxPro DBF</span>
+      </div>
+    </section>
+
+    <!-- ── PROJECTS ── -->
+    <section id="projects">
+      <div class="section-eyebrow">Work</div>
+      <h2 class="section-title">Featured projects</h2>
+
+      <div class="proj-grid">
+
+        <div class="proj-card" onclick="openModal('modal-pvr')">
+          <img class="proj-thumb" src="img/live/pvr2.png" alt="Porsche Visual Reception">
+          <span class="proj-badge">Web App</span>
+          <div class="proj-info">
+            <div class="proj-name">Porsche Visual Reception</div>
+            <div class="proj-type">Service adviser checklist &amp; vehicle intake</div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('modal-papp')">
+          <img class="proj-thumb" src="img/live/p-app.png" alt="Porsche Mobile App">
+          <span class="proj-badge">Web + Mobile</span>
+          <div class="proj-info">
+            <div class="proj-name">Porsche Mobile App</div>
+            <div class="proj-type">Booking &amp; e-commerce — iOS &amp; Android</div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('modal-gp')">
+          <img class="proj-thumb" src="img/live/gp.png" alt="Porsche Guard Patrol">
+          <span class="proj-badge">Mobile</span>
+          <div class="proj-info">
+            <div class="proj-name">Guard Patrol App</div>
+            <div class="proj-type">RFID-based patrol tracking system</div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('modal-hr')">
+          <img class="proj-thumb" src="img/live/hr.png" alt="Porsche HRIS">
+          <span class="proj-badge">Web App</span>
+          <div class="proj-info">
+            <div class="proj-name">Porsche HRIS</div>
+            <div class="proj-type">Internal HR information system</div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('modal-td')">
+          <img class="proj-thumb" src="img/live/td.png" alt="Test Drive App">
+          <span class="proj-badge">Web App</span>
+          <div class="proj-info">
+            <div class="proj-name">Test Drive Tracker</div>
+            <div class="proj-type">Real-time test drive status management</div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('modal-barcode')">
+          <img class="proj-thumb" src="img/live/barcode.png" alt="Barcode Generator">
+          <span class="proj-badge">Web App</span>
+          <div class="proj-info">
+            <div class="proj-name">Barcode Generator</div>
+            <div class="proj-type">Porsche Design label printing tool</div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('modal-wi')">
+          <img class="proj-thumb" src="img/live/wi.png" alt="DMS Web Inventory">
+          <span class="proj-badge">Web App</span>
+          <div class="proj-info">
+            <div class="proj-name">Porsche DMS Inventory</div>
+            <div class="proj-type">Dealer management web inventory system</div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('modal-ven')">
+          <img class="proj-thumb" src="img/live/ven.png" alt="Ventum Tech">
+          <span class="proj-badge">Web App</span>
+          <div class="proj-info">
+            <div class="proj-name">Ventum Tech System</div>
+            <div class="proj-type">Project management &amp; inventory</div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('modal-ineos')">
+          <img class="proj-thumb" src="img/live/ineos.png" alt="Ineos CRM">
+          <span class="proj-badge">Web App</span>
+          <div class="proj-info">
+            <div class="proj-name">Ineos Grenadier CRM</div>
+            <div class="proj-type">Sales system for vehicle dealership</div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('modal-dai')">
+          <img class="proj-thumb" src="img/live/dai.png" alt="Daikyo">
+          <span class="proj-badge">Website</span>
+          <div class="proj-info">
+            <div class="proj-name">Daikyo Website</div>
+            <div class="proj-type">Company website with CMS</div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('modal-jgm')">
+          <img class="proj-thumb" src="img/live/jgm.png" alt="JGM Philippines">
+          <span class="proj-badge">Website</span>
+          <div class="proj-info">
+            <div class="proj-name">JGM Philippines</div>
+            <div class="proj-type">Company website with CMS</div>
+          </div>
+        </div>
+
+        <div class="proj-card" onclick="openModal('modal-tss')">
+          <img class="proj-thumb" src="img/live/tss.png" alt="TSS Philippines">
+          <span class="proj-badge">Website</span>
+          <div class="proj-info">
+            <div class="proj-name">Test Solution Services Inc.</div>
+            <div class="proj-type">Company website with CMS</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── PORTFOLIO ── -->
+    <section id="portfolio">
+      <div class="section-eyebrow">Archive</div>
+      <h2 class="section-title">Portfolio</h2>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterPort(this,'all')">All</button>
+        <button class="filter-btn" onclick="filterPort(this,'webapps')">Web Apps</button>
+        <button class="filter-btn" onclick="filterPort(this,'company')">Company Sites</button>
+        <button class="filter-btn" onclick="filterPort(this,'blog')">Blog Sites</button>
+        <button class="filter-btn" onclick="filterPort(this,'mobile')">Mobile Apps</button>
+      </div>
+
+      <div class="port-grid" id="portGrid">
+        <div class="port-item" data-cat="blog"><img src="project/aussi mining-x-www.aussiemining.com-x-wordpress-x-blog.jpg" alt=""><div class="port-caption"><div class="port-title">Aussi Mining</div><div class="port-url">aussiemining.com</div></div></div>
+        <div class="port-item" data-cat="blog"><img src="project/australian mining news-x-www.australianminingnews.com-x-wordpress-x-blog.jpg" alt=""><div class="port-caption"><div class="port-title">Australian Mining News</div><div class="port-url">australianminingnews.com</div></div></div>
+        <div class="port-item" data-cat="mobile"><img src="project/B2B eCommerce-x-androis and IOS-x-vuejs-x-mobile.png" alt=""><div class="port-caption"><div class="port-title">B2B eCommerce</div><div class="port-url">Android &amp; iOS</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/Baragay System-x-www.brgy.ciwebapps.com-x-php-x-webapps.png" alt=""><div class="port-caption"><div class="port-title">Barangay System</div><div class="port-url">brgy.ciwebapps.com</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/booking system-x-www.niche.ciwebapps.com-x-php-x-webapps.png.png" alt=""><div class="port-caption"><div class="port-title">Booking System</div><div class="port-url">niche.ciwebapps.com</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/canteen pos system-x-www.pos.ciwebapps.com-x-php-x-webapps.jpg" alt=""><div class="port-caption"><div class="port-title">Canteen POS System</div><div class="port-url">pos.ciwebapps.com</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/Contact Tarcing (covid-19)-x-www.ct.ciwebapps.com-x-codeigniter-x-webapps.png" alt=""><div class="port-caption"><div class="port-title">Contact Tracing (Covid-19)</div><div class="port-url">ct.ciwebapps.com</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/Fasttrack-eCourse-x-www.finanacial.ciwebapps.com-x-codeigniter-x-webapps.png" alt=""><div class="port-caption"><div class="port-title">Fasttrack eCourse</div><div class="port-url">ciwebapps.com</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/financial system-x-www.finanacial.ciwebapps.com-x-codeigniter-x-webapps.jpg" alt=""><div class="port-caption"><div class="port-title">Financial System</div><div class="port-url">ciwebapps.com</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/fixed asset management system-x-www.fams.ciwebapps.com-x-codeigniter-x-webapps.jpg" alt=""><div class="port-caption"><div class="port-title">Fixed Asset Management</div><div class="port-url">fams.ciwebapps.com</div></div></div>
+        <div class="port-item" data-cat="company"><img src="project/HGservices-x-www.hgserv.com-x-laravel-x-company.jpg" alt=""><div class="port-caption"><div class="port-title">HGServices Website</div><div class="port-url">hgserv.com</div></div></div>
+        <div class="port-item" data-cat="mobile"><img src="project/HIREtrades Moblie App-x-androis and IOS-x-vuejs-x-mobile.jpg" alt=""><div class="port-caption"><div class="port-title">HIREtrades Mobile App</div><div class="port-url">Android &amp; iOS</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/hris and payroll system-x-www.hrweb.ph-x-php-x-webapps.jpg" alt=""><div class="port-caption"><div class="port-title">HRIS &amp; Payroll System</div><div class="port-url">hrweb.ph</div></div></div>
+        <div class="port-item" data-cat="mobile"><img src="project/HRweb Mobile-x-androis and IOS-x-vuejs-x-mobile.png" alt=""><div class="port-caption"><div class="port-title">HRweb Mobile</div><div class="port-url">Android &amp; iOS</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/Learning Management System-x-www.kll.urcity.com-x-php-x-webapps.png" alt=""><div class="port-caption"><div class="port-title">Learning Management System</div><div class="port-url">kll.urcity.com</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/online exam system-x-www.exam.ciwebapps.com-x-php-x-webapps.png" alt=""><div class="port-caption"><div class="port-title">Online Exam System</div><div class="port-url">exam.ciwebapps.com</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/payroll system-x-www.oformoconsult.com-y-oasis-x-codeigniter-x-webapps.jpg" alt=""><div class="port-caption"><div class="port-title">Payroll System</div><div class="port-url">oformoconsult.com/oasis</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/recruitment system-x-www.recruitment.ciwebapps.com-x-codeigniter-x-webapps.jpg" alt=""><div class="port-caption"><div class="port-title">Recruitment System</div><div class="port-url">recruitment.ciwebapps.com</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/School system-x-www.ems.ciwebapps.com-x-php-x-webapps.png" alt=""><div class="port-caption"><div class="port-title">School System</div><div class="port-url">ems.ciwebapps.com</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/student portal-x-www.sp.ciwebapps.com-x-codeigniter-x-webapps.jpg" alt=""><div class="port-caption"><div class="port-title">Student Portal</div><div class="port-url">sp.ciwebapps.com</div></div></div>
+        <div class="port-item" data-cat="blog"><img src="project/the mining files australia-x-www.theminingfilesaustralia.com-x-wordpress-x-blog.jpg" alt=""><div class="port-caption"><div class="port-title">The Mining Files Australia</div><div class="port-url">theminingfilesaustralia.com</div></div></div>
+        <div class="port-item" data-cat="webapps"><img src="project/ticketing system-x-www.ticket.ciwebapps.com-x-php-x-webapps.jpg" alt=""><div class="port-caption"><div class="port-title">Ticketing System</div><div class="port-url">ticket.ciwebapps.com</div></div></div>
+      </div>
+    </section>
+
+    <!-- ── CONTACT ── -->
+    <section id="contact">
+      <div class="section-eyebrow">Let's connect</div>
+      <h2 class="section-title">Get in touch</h2>
+
+      <div class="map-wrap">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.6597993743167!2d51.55881167282474!3d25.24838099092277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45cf0bebf54253%3A0xf160b65cd58d2cf1!2sUmm%20Al%20Rabee%20St%2C%20Doha!5e0!3m2!1sen!2sqa!4v1736152967283!5m2!1sen!2sqa" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-block">
+          <h3>Contact details</h3>
+          <div class="contact-link-row">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <span>Umm Al Rabee St, Doha, Qatar</span>
+          </div>
+          <div class="contact-link-row">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.8 19.8 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72"/></svg>
+            <a href="tel:+97430641960">+974 30641960</a>
+          </div>
+          <div class="contact-link-row">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+            <a href="mailto:r.christopherbutiong@gmail.com">r.christopherbutiong@gmail.com</a>
+          </div>
+          <div class="contact-link-row">
+            <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            <a href="https://www.linkedin.com/in/ramon-christopher-butiong-7206b5144/" target="_blank">linkedin.com/in/monbutiong</a>
+          </div>
+          <div class="contact-link-row">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <a href="https://monbutiong.com" target="_blank">monbutiong.com</a>
+          </div>
+        </div>
+
+        <div class="contact-block">
+          <h3>Send a message</h3>
+          <form method="post" action="send.php">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" name="name" placeholder="Your name">
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="you@email.com">
+              </div>
+              <div class="form-group form-full">
+                <label>Subject</label>
+                <input type="text" name="subject" placeholder="What's this about?">
+              </div>
+              <div class="form-group form-full">
+                <label>Message</label>
+                <textarea name="message" placeholder="Tell me about your project…"></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-dark" style="width:100%;justify-content:center;">Send message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ── MODALS ── -->
+<div class="modal-backdrop" id="modal-pvr" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Porsche Visual Reception</h3><button class="modal-close" onclick="closeModal('modal-pvr')">×</button></div>
+    <div class="modal-body"><embed src="docs/PVR 2 Screenshots.pdf?1" type="application/pdf"></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-papp" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Porsche Mobile App</h3><button class="modal-close" onclick="closeModal('modal-papp')">×</button></div>
+    <div class="modal-body"><embed src="docs/Porsche Mobile.pdf" type="application/pdf"></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-gp" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Guard Patrol App</h3><button class="modal-close" onclick="closeModal('modal-gp')">×</button></div>
+    <div class="modal-body"><embed src="docs/Porsche Guard Patrol.pdf" type="application/pdf"></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-hr" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Porsche HRIS</h3><button class="modal-close" onclick="closeModal('modal-hr')">×</button></div>
+    <div class="modal-body"><embed src="docs/Porsche HRIS.pdf" type="application/pdf"></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-td" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Test Drive Tracker</h3><button class="modal-close" onclick="closeModal('modal-td')">×</button></div>
+    <div class="modal-body"><embed src="docs/Test Drive App.pdf" type="application/pdf"></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-barcode" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Barcode Generator</h3><button class="modal-close" onclick="closeModal('modal-barcode')">×</button></div>
+    <div class="modal-body"><embed src="docs/Porsche Design Barcode Generator.pdf" type="application/pdf"></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-wi" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Porsche DMS Inventory</h3><button class="modal-close" onclick="closeModal('modal-wi')">×</button></div>
+    <div class="modal-body"><embed src="docs/Porsche DMS Web Inventory.pdf" type="application/pdf"></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-ven" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Ventum Tech System</h3><button class="modal-close" onclick="closeModal('modal-ven')">×</button></div>
+    <div class="modal-body"><embed src="docs/Ventum-Project.pdf" type="application/pdf"></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-ineos" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Ineos Grenadier CRM</h3><button class="modal-close" onclick="closeModal('modal-ineos')">×</button></div>
+    <div class="modal-body"><embed src="docs/Ineos-crm-sample-screenshot.pdf" type="application/pdf"></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-dai" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Daikyo Website</h3><button class="modal-close" onclick="closeModal('modal-dai')">×</button></div>
+    <div class="modal-body"><iframe src="https://daikyoph.com/"></iframe></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-jgm" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>JGM Philippines</h3><button class="modal-close" onclick="closeModal('modal-jgm')">×</button></div>
+    <div class="modal-body"><iframe src="https://jgmphilippines.com/"></iframe></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-tss" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Test Solution Services Inc.</h3><button class="modal-close" onclick="closeModal('modal-tss')">×</button></div>
+    <div class="modal-body"><iframe src="https://www.tss-ph.com/"></iframe></div>
+  </div>
+</div>
+
+<script>
+  function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+  function closeModalOutside(e) { if(e.target.classList.contains('modal-backdrop')) { e.target.classList.remove('open'); document.body.style.overflow=''; } }
+
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') document.querySelectorAll('.modal-backdrop.open').forEach(m=>{m.classList.remove('open'); document.body.style.overflow='';}) });
+
+  function filterPort(btn, cat) {
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#portGrid .port-item').forEach(item=>{
+      item.style.display = (cat==='all' || item.dataset.cat===cat) ? '' : 'none';
+    });
+  }
+
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('nav a');
+  const idMap = { about:'#about', experience:'#experience', skills:'#skills', projects:'#projects', portfolio:'#portfolio', contact:'#contact' };
+
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        navLinks.forEach(l=>l.classList.remove('active'));
+        const id = entry.target.id;
+        const link = document.querySelector(`nav a[href="#${id}"]`);
+        if(link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 });
+
+  sections.forEach(s=>observer.observe(s));
+</script>
+
+</body>
+</html>
